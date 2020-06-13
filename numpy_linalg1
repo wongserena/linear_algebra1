@@ -1,0 +1,97 @@
+import numpy as np
+def prompt():
+  global equation1, equation2
+  print('this program is to evaluate two simulanteous equations of variable x and y,')
+  equation1 = input('enter your first equation: ')
+  equation2 = input('enter your second equation: ')
+  equation1.replace(" ","")
+  equation2.replace(" ", "")
+  parsing(equation1, equation2)
+
+def parsing(equation1, equation2): 
+  global h,k,a,b,c,d
+# test equation validity  
+  if ("=" in equation1 and equation2) and ("x" in equation1 and equation2) and ("y" in equation1 and equation2):
+    h = float(equation1.partition('=')[2])
+    k = float(equation2.partition('=')[2])
+    equation1_split = equation1.partition('=')[0]
+    equation2_split = equation2.partition('=')[0]
+    if '+' in equation1_split:
+      equation1_splita = equation1_split.partition('+')[0]
+      a = float(equation1_splita.replace('x',''))
+      equation1_splitb = equation1_split.partition('+')[2]
+      b = float(equation1_splitb.replace('y',''))
+    elif '-' in equation1_split:
+      equation1_splita = equation1_split.rpartition('-')[0]
+      a = float(equation1_splita.replace('x',''))
+      equation1_splitb = equation1_split.rpartition('-')[2]
+      b = equation1_splitb.replace('y','')
+      b = float(b) * -1
+    if '+' in equation2_split:
+      equation2_splitc = equation2_split.partition('+')[0]
+      c = float(equation2_splitc.replace('x',''))
+      equation2_splitd = equation2_split.partition('+')[2]
+      d = float(equation2_splitd.replace('y',''))
+    elif '-' in equation2_split:
+      equation2_splitc = equation2_split.rpartition('-')[0]
+      c = float(equation2_splitc.replace('x',''))
+      equation2_splitd = equation2_split.rpartition('-')[2] 
+      d = float(equation2_splitd.replace('y',''))
+      d = float(d) * -1
+    if '+' in equation1:
+      correct1 = input('Is your first equation ' + str(a) + 'x' + '+' + str(b) + 'y' + '=' + str(h) + '?' + ' yes(y) or no(n): ') 
+    elif '-' in equation1:
+      correct1 = input('Is your first equation ' + str(a) + 'x' + str(b) + 'y' + '=' + str(h) + '?' + ' yes(y) or no(n): ') 
+    if '+' in equation2:
+      correct2 = input('Is your second equation ' + str(c) + 'x' + '+' + str(d) + 'y' + '=' + str(k) + '?' + ' yes(y) or no(n): ') 
+    elif '-' in equation2:  
+      correct2 = input('Is your second equation ' + str(c) + 'x' + str(d) + 'y' + '=' + str(k) + '?' + ' yes(y) or no(n): ') 
+    if correct1 and correct2 == 'y':
+      calculate()
+    else:
+      return prompt()  
+  else: 
+    print('Equations invalid')
+    return prompt()
+   
+def calculate():
+  i = np.array([[a,b],[c,d]])
+  j = np.array([h,k])
+  iinv = np.linalg.inv(i)
+  solution = np.dot(iinv,j)
+  print(solution)
+  check()
+
+def check():
+  determinant = float(a) * float(d) - float(c) * float(b) 
+  if determinant != 0:
+    newd = 1/determinant * float(d)
+    newb = 1/determinant * float(b) * -1
+    newc = 1/determinant * float(c) * -1
+    newa = 1/determinant * float(a)
+    x = round(newd * float(h) + newb * float(k) , 2)
+    y = round(newc * float(h) + newa * float(k) , 2)
+    print('Your solution is ' + '(' + str(x) + ',' + str(y) + ')')
+    play_again()
+  else:  
+    print('no solution')
+    play_again()
+
+def play_again():
+  again = input('would you like to try another one? if yes, type y. if no, type n.')
+  if again not in {'y','n'}:
+    print('invalid response')
+    return play_again()
+  elif again == 'n':
+    print('thank you, bye!')
+  
+def counter():
+  global number 
+  while number <= 2:
+    print('you have played ' + str(number) + ' time(s)') 
+    number += 1
+    prompt()
+
+number = 0
+counter()
+print('your turn is over')
