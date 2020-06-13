@@ -1,0 +1,37 @@
+import numpy as np 
+def readfile(): 
+	global equations	
+	file = open("matrix.txt" , "rt") 
+	equations = file.read() 
+	file.close()
+	equations.replace(" ", "") 
+	
+	
+def parsing(): 
+	global a,b,c,d,h,k
+	a = float(equations.split(',')[0])
+	b = float(equations.split(',')[1])
+	c = float(equations.split(',')[2])
+	d = float(equations.split(',')[3])
+	h = float(equations.split(',')[4])
+	k = float(equations.split(',')[5])
+	
+def calculate():
+	global solution
+	i = np.array([[a,b],[c,d]])
+	j = np.array([h,k])
+	solution = np.linalg.solve(i,j)
+	print(solution)
+	
+def output():
+	output = open('output', 'wt')
+	output.write(str(solution))
+	output.close()
+
+
+readfile()
+parsing()
+calculate()
+output()
+
+  
