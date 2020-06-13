@@ -1,0 +1,56 @@
+def calculate():
+  print('this program is to evaluate two simulanteous equations,')
+  print('where the first equation is ax+by=h,')
+  print('and the second equation is cx+dy=k')
+  a=input('enter the value of a:')
+  b = input('enter the value of b:')
+  c = input('enter the value of c:')
+  d = input('enter the value of d:')
+  h = input('eter the value of h:')
+  k = input('enter the value of k:')
+  print('your first equation is' + ' ' + a + 'x' + b + 'y' + '=' + h)
+  print('your second equation is' + ' ' + c + 'x' + d + 'y' + '=' + k)
+  # evaluation of A-1
+  determinant = float(a) * float(d) - float(b) * float(c)
+  if determinant == 0:
+    print('no solution')
+    return counter()
+
+  newd = 1/determinant * float(d)
+  newb = 1/determinant * float(b) * -1
+  newc = 1/determinant * float(c) * -1
+  newa = 1/determinant * float(a)
+  x = (newd * float(h) + newb * float(k))
+  y = (newc * float(h) + newa * float(k))
+  print('your x value is')
+  print(x)
+  print('your y value is')
+  print(y)
+  return counter()
+
+def play_again():
+  again = input('would you like to try another one? if yes, type y. if no, type n.')
+  if again not in {'y','n'}:
+    print('invalid response')
+    return play_again()
+  elif again == 'n':
+    print('thank you, bye!')
+  elif again == 'y':
+    return calculate()
+
+number = 1  
+def counter():
+  global number 
+  if number == 1:
+    print('you have played' + ' ' + str(number) + ' ' + 'time')
+  else:
+    print('you have played' + ' ' + str(number) + ' ' + 'times')  
+  number = number + 1
+  if number > 5:
+    print('your turn is over')
+  else:
+    return play_again()    
+
+calculate()
+
+
