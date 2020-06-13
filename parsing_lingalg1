@@ -1,0 +1,145 @@
+def calculate():
+  print('this program is to evaluate two simulanteous equations,')
+  print('where the first equation is ax+by=h,')
+  print('and the second equation is cx+dy=k')
+  equation1 = input('enter your first equation: ')
+  equation2 = input('enter your second equation: ')
+  print('your first equation is ' + equation1.replace(" ",""))
+  print('your second equation is ' + equation2.replace(" ", ""))
+  if "=" in equation1:
+    h = float(equation1.partition('=')[2])
+    print('your h value is ' + str(h))
+  else:
+    print('1st equation invalid, missing equal sign')
+    return calculate()
+  if "=" in equation2:
+    k = float(equation2.partition('=')[2])
+    print('your k value is ' + str(k))
+  else:
+    print('2nd equation invalid, missing equal sign')
+    return calculate()
+  if "x" not in equation1:
+    print('equation 1 not valid, missing x')
+    return calculate()
+  elif "y" not in equation1:
+    print('equation 1 not valid, missing y')
+    return calculate()
+  if "x" not in equation2:
+    print('equation 2 not valid, missing x') 
+    return calculate()
+  elif "y" not in equation2:
+    print('equation 2 not valid, missing y')
+    return calculate()       
+  equation1_split = equation1.partition('=')[0]
+  equation2_split = equation2.partition('=')[0]
+  digits1 = [float(s) for s in equation1_split if s.isdigit()]
+  digits2 = [float(i) for i in equation2_split if i.isdigit()]
+  if len(digits1) <= 2:
+    a = digits1[0]
+    b = digits1[1]
+  else:
+    if "+" in equation1:
+      equation1_splitia = equation1_split.partition('+')[0]
+      a = equation1_splitia.replace('x','')
+      equation1_splitib = equation1_split.partition('+')[2]
+      b = equation1_splitib.replace('y','')
+    elif "-" in equation1:
+      equation1_splitia = equation1_split.partition('-')[0]
+      a = equation1_splitia.replace('x','')
+      equation1_splitib = equation1_split.partition('-')[2]
+      b = equation1_splitib.replace('y','')
+    else:
+      print('1st equation invalid, missing operator')
+      return calculate()
+  if len(digits2) <= 2:    
+    c = digits2[0]
+    d = digits2[1]
+  else:
+    if "+" in equation2:
+      equation2_splitic = equation2_split.partition('+')[0]
+      c = float(''.join(filter(lambda i: i.isdigit(), equation2_splitic)))
+      equation2_splitid = equation2_split.partition('+')[2]
+      d = float(''.join(filter(lambda i: i.isdigit(), equation2_splitid))) 
+    elif "-" in equation2:
+      equation2_splitic = equation2_split.partition('-')[0]
+      c = float(''.join(filter(lambda i: i.isdigit(), equation2_splitic))) 
+      equation2_splitid = equation2_split.partition('-')[2]
+      d = float(''.join(filter(lambda i: i.isdigit(), equation2_splitid)))
+    else:
+      print('2nd equation invalid, missing operator') 
+      return calculate() 
+  if "+" in equation1:
+    equation1_splita = equation1_split.partition('+')[0]
+    equation1_splitb = equation1_split.partition('+')[2]
+  elif "-" in equation1:
+    equation1_splita = equation1_split.rpartition('-')[0]
+    if "-" in equation1_splita:
+      equation1_splitb = equation1_split.rpartition('-')[1]
+    elif "-" not in equation1_splita:
+      equation1_splitb = equation1_split.partition('-')[1] 
+  else:
+    print('1st equation invalid, missing operator')
+    return calculate()
+  if "-" in equation1_splita:
+    a = a * -1
+  if "-" in equation1_splitb:
+    b = b * -1
+  print('your a value is ' + str(a))
+  print('your b value is ' + str(b))
+  if "+" in equation2:
+    equation2_splitc = equation2_split.partition('+')[0]
+    equation2_splitd = equation2_split.partition('+')[2]
+  elif "-" in equation2:
+    equation2_splitc = equation2_split.rpartition('-')[0]
+    if "-" in equation2_splitc:
+      equation2_splitd = equation2_split.rpartition('-')[1]
+    elif "-" not in equation2_splitc:
+      equation2_splitd = equation2_split.partition('-')[1]
+  else:
+    print('2nd equation invalid, missing operator')
+    return calculate()
+  if "-" in equation2_splitc:
+    c = c * -1
+  if "-" in equation2_splitd:
+    d = d * -1
+  print('your c value is ' + str(c))
+  print('your d value is ' + str(d))
+
+  determinant = float(a) * float(d) - float(c) * float(b) 
+  if determinant == 0:
+    print('no solution')
+    return counter()
+  newd = 1/determinant * float(d)
+  newb = 1/determinant * float(b) * -1
+  newc = 1/determinant * float(c) * -1
+  newa = 1/determinant * float(a)
+  x = (newd * float(h) + newb * float(k))
+  y = (newc * float(h) + newa * float(k))
+  print('your x value is ' + str(x))
+  print('your y value is ' + str(y))
+  return counter()
+
+def play_again():
+  again = input('would you like to try another one? if yes, type y. if no, type n.')
+  if again not in {'y','n'}:
+    print('invalid response')
+    return play_again()
+  elif again == 'n':
+    print('thank you, bye!')
+  elif again == 'y':
+    return calculate()
+
+number = 1  
+def counter():
+  global number 
+  if number == 1:
+    print('you have played' + ' ' + str(number) + ' ' + 'time')
+  else:
+    print('you have played' + ' ' + str(number) + ' ' + 'times')  
+  number = number + 1
+  if number > 5:
+    print('your turn is over')
+  else:
+    return play_again()      
+
+calculate()    
