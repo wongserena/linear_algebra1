@@ -1,0 +1,63 @@
+import numpy as np
+def prompt():
+  global equation1, equation2, equation3
+  print('''this program is to evaluate three simulanteous equations of variable x, y and z,
+  where the first equation is ax+by+cz=d, the second equation is ex+fy+gz=h and the third equation is ix+jy+kz=l ''')
+  print('enter all values consecutively, separated by commas.')
+  equation1 = input('enter the values for a, b, c, and d: ')
+  equation2 = input('enter the values for e, f, g, and h: ')
+  equation3 = input('enter the values for i, j, k, and l: ')
+  equation1.replace(" ","")
+  equation2.replace(" ", "")
+  parsing(equation1, equation2)
+
+def parsing(equation1, equation2): 
+  global a,b,c,d,e,f,g,h,i,j,k,l
+  a = float(equation1.split(',')[0])
+  b = float(equation1.split(',')[1])
+  c = float(equation1.split(',')[2])
+  d = float(equation1.split(',')[3])
+  e = float(equation2.split(',')[0])
+  f = float(equation2.split(',')[1])
+  g = float(equation2.split(',')[2])
+  h = float(equation2.split(',')[3])
+  i = float(equation3.split(',')[0])
+  j = float(equation3.split(',')[1])
+  k = float(equation3.split(',')[2])
+  l = float(equation3.split(',')[3])
+  calculate()
+       
+def calculate():
+  x = np.array([[a,b,c],[e,f,g],[i,j,k]])
+  print(x.shape)
+  y = np.array([[d],[h],[l]])
+  print(y.shape)
+  determinant = np.linalg.det(x)
+  if determinant != 0:
+    solution = np.linalg.solve(x,y)
+    solution = np.round_(solution)
+    print('Your solution is: ') 
+    print(solution)
+    play_again()
+  else: 
+    print('no solution')
+    play_again()  
+ 
+def play_again():
+  again = input('would you like to try another one? if yes, type y. if no, type n.')
+  if again not in {'y','n'}:
+    print('invalid response')
+    return play_again()
+  elif again == 'n':
+    print('thank you, bye!')
+  
+def counter():
+  global number 
+  while number <= 2:
+    print('you have played ' + str(number) + ' time(s)') 
+    number += 1
+    prompt()
+
+number = 0
+counter()
+print('your turn is over')
